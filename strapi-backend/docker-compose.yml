@@ -1,0 +1,32 @@
+services:
+  strapi:
+    build: .
+    container_name: strapi-app
+    working_dir: /srv/app
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_NAME: ${DB_NAME}
+      DATABASE_HOST: db
+      DATABASE_PORT: ${DB_PORT}
+      DATABASE_USERNAME: ${DB_USER}
+      DATABASE_PASSWORD: ${DB_PASS}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+    ports:
+      - '1337:1337'
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: strapi-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - strapi-db-data:/var/lib/postgresql/data
+
+volumes:
+  strapi-db-data:

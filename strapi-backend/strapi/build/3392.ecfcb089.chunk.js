@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkstrapi_project=self.webpackChunkstrapi_project||[]).push([[3392],{63392:(n,t,e)=>{e.r(t),e.d(t,{default:()=>d});const d={"plugin.description.long":"Adds GraphQL endpoint with default API methods.","plugin.description.short":"Adds GraphQL endpoint with default API methods.","plugin.name":"GraphQL"}}}]);
