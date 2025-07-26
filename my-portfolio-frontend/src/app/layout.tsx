@@ -6,7 +6,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="zh-Hant">
       <body className="p-8">
-        <header className="mb-8">
+        <header className="mb-8 absolute top-0 left-0 w-full z-20 px-6 py-4 text-white flex items-center justify-between">
           <h1 className="text-2xl font-bold mb-4">
             <Link href="/">我們公司的 LOGO</Link>
           </h1>
