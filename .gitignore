@@ -23,7 +23,9 @@ strapi-backend/strapi/.tmp/
 strapi-backend/strapi/dist/
 strapi-backend/strapi/.cache/
 strapi-backend/strapi/.strapi/
-strapi-backend/strapi/public/uploads/
+# Keep uploads directory present, but don't track uploaded files
+strapi-backend/strapi/public/uploads/*
+!strapi-backend/strapi/public/uploads/.gitkeep
 
 # Docker local artifacts/backups
 _openclaw_backup_docker/
