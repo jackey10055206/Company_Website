@@ -22,7 +22,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
             width={227}
             height={79}
             priority
-            className="h-7 w-auto md:h-9"
+            className="h-9 w-auto md:h-12"
           />
         </Link>
 
