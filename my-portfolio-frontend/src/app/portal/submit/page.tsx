@@ -27,7 +27,17 @@ export default function PortalSubmitPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // submitLabel removed (button text is rendered inline)
+  const [me, setMe] = useState<{ ok: true; user: { username: string; role: string } } | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch('/api/portal/me', { cache: 'no-store' });
+      const j = (await res.json().catch(() => null)) as unknown;
+      if (res.ok && j && typeof j === 'object' && (j as { ok?: unknown }).ok) {
+        setMe(j as { ok: true; user: { username: string; role: string } });
+      }
+    })();
+  }, []);
 
   const totalSizeMb = useMemo(() => {
     const bytes = (cover?.size || 0) + gallery.reduce((sum, f) => sum + f.size, 0);
@@ -82,7 +92,9 @@ export default function PortalSubmitPage() {
     <div className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-black/30 p-6 backdrop-blur">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-2xl font-semibold">上傳案例（送審）</h2>
+          <h2 className="text-2xl font-semibold">
+            上傳案例（{me?.user?.role === 'admin' ? '直接發布' : '送審'}）
+          </h2>
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
@@ -106,7 +118,15 @@ export default function PortalSubmitPage() {
           </div>
         </div>
         <p className="mt-2 text-sm text-white/60">
-          送出成功後，案件會進入 <code>pending</code>，請 admin 到 <code>/portal/admin</code> 審核。
+          {me?.user?.role === 'admin' ? (
+            <>
+              你目前是 <code>admin</code>：送出後會直接設為 <code>approved</code> 並立即上架（不需要到 <code>/portal/admin</code> 再按 Approve）。
+            </>
+          ) : (
+            <>
+              你目前是 <code>uploader</code>：送出後案件會進入 <code>pending</code>，請 admin 到 <code>/portal/admin</code> 審核。
+            </>
+          )}
         </p>
         <p className="mt-2 text-sm text-white/60">
           檔案與資料會由伺服器端代打寫入 Strapi（<code>/api/portal/portfolio/submit</code>）。
@@ -201,7 +221,9 @@ export default function PortalSubmitPage() {
               else if (typeof id === 'number' || typeof id === 'string') setExistingId(String(id));
 
               if (typeof status === 'string') setExistingStatus(status);
-              setSuccess('已送出成功（已送審 / pending）。');
+              setSuccess(me?.user?.role === 'admin'
+                ? '已送出成功（直接發布 / approved）。'
+                : '已送出成功（已送審 / pending）。');
             } catch (err: unknown) {
               const message = err instanceof Error ? err.message : 'Submit failed';
               setError(message);
@@ -311,11 +333,11 @@ export default function PortalSubmitPage() {
           >
             {loading
               ? '送出中…'
-              : existingId
-                ? existingStatus === 'rejected'
-                  ? '更新並重新送審'
-                  : '更新並送審'
-                : '送出審核'}
+              : me?.user?.role === 'admin'
+                ? (existingId ? '更新並直接發布' : '直接發布')
+                : (existingId
+                  ? (existingStatus === 'rejected' ? '更新並重新送審' : '更新並送審')
+                  : '送出審核')}
           </button>
           <p className="mt-2 text-xs text-white/50">
             提醒：送出成功後會顯示提示訊息；若你重複點擊，可能會重複送出。
