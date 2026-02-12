@@ -21,7 +21,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <img
             src="/brand/logo-v2.png"
             alt="公司 Logo"
-            className="h-14 w-auto md:h-24"
+            className="h-14 w-auto -mt-1 md:h-24 md:-mt-2"
           />
         </Link>
 
