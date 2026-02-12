@@ -20,29 +20,36 @@ function isApproved(data: any) {
 
 export default factories.createCoreController('api::portfolio.portfolio', ({ strapi }) => ({
   async create(ctx) {
-    // Workflow:
-    // - super (and other contributors) => always pending (cannot self-approve)
-    // - jackey (admin/editor) => auto-approved on create (so no "self-review" loop)
+    // Workflow notes:
+    // - Requests coming from Portal use an API Token (no ctx.state.user). In that case,
+    //   we TRUST the incoming review_status (Portal already enforces admin=approved, uploader=pending).
+    // - Requests coming from Strapi admin/users-permissions (ctx.state.user present):
+    //   enforce the rule that only jackey can self-approve on create.
+
     const user = (ctx.state as any)?.user;
-    const username = String(user?.username || '').toLowerCase();
-    const email = String(user?.email || '').toLowerCase();
-    const isJackey = username === 'jackey' || email.startsWith('jackey@');
+    const hasUser = Boolean(user);
 
-    const body: any = ctx.request.body || {};
-    const data: any = body.data || body;
+    if (hasUser) {
+      const username = String(user?.username || '').toLowerCase();
+      const email = String(user?.email || '').toLowerCase();
+      const isJackey = username === 'jackey' || email.startsWith('jackey@');
 
-    if (data && typeof data === 'object') {
-      if (isJackey) {
-        // Default to approved if not explicitly set
-        if (!data.review_status) data.review_status = 'approved';
-      } else {
-        // Force pending for non-jackey creates (ignore any incoming value)
-        data.review_status = 'pending';
+      const body: any = ctx.request.body || {};
+      const data: any = body.data || body;
+
+      if (data && typeof data === 'object') {
+        if (isJackey) {
+          // Default to approved if not explicitly set
+          if (!data.review_status) data.review_status = 'approved';
+        } else {
+          // Force pending for non-jackey creates (ignore any incoming value)
+          data.review_status = 'pending';
+        }
+
+        // Ensure we write back in the same shape
+        if (body.data) body.data = data;
+        else ctx.request.body = data;
       }
-
-      // Ensure we write back in the same shape
-      if (body.data) body.data = data;
-      else ctx.request.body = data;
     }
 
     // @ts-ignore
@@ -82,19 +89,25 @@ export default factories.createCoreController('api::portfolio.portfolio', ({ str
   },
 
   async update(ctx) {
-    // Prevent non-jackey users from changing review_status via update
-    const user = (ctx.state as any)?.user;
-    const username = String(user?.username || '').toLowerCase();
-    const email = String(user?.email || '').toLowerCase();
-    const isJackey = username === 'jackey' || email.startsWith('jackey@');
+    // Prevent non-jackey users (from Strapi admin/users-permissions) from changing review_status via update.
+    // But allow API Token based updates (Portal server) to manage review_status.
 
-    if (!isJackey) {
-      const body: any = ctx.request.body || {};
-      const data: any = body.data || body;
-      if (data && typeof data === 'object' && 'review_status' in data) {
-        delete data.review_status;
-        if (body.data) body.data = data;
-        else ctx.request.body = data;
+    const user = (ctx.state as any)?.user;
+    const hasUser = Boolean(user);
+
+    if (hasUser) {
+      const username = String(user?.username || '').toLowerCase();
+      const email = String(user?.email || '').toLowerCase();
+      const isJackey = username === 'jackey' || email.startsWith('jackey@');
+
+      if (!isJackey) {
+        const body: any = ctx.request.body || {};
+        const data: any = body.data || body;
+        if (data && typeof data === 'object' && 'review_status' in data) {
+          delete data.review_status;
+          if (body.data) body.data = data;
+          else ctx.request.body = data;
+        }
       }
     }
 
