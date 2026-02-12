@@ -73,7 +73,8 @@ export default function HomePage() {
       {/* 右下角聯絡按鈕 */}
       <button
         onClick={() => setIsContactOpen(!isContactOpen)}
-        className="fixed bottom-6 right-6 z-30 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full shadow-lg transition"
+        className="fixed right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full shadow-lg transition"
+        style={{ bottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
       >
         聯絡我們
       </button>
@@ -84,7 +85,8 @@ export default function HomePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-20 right-6 z-30 w-72 bg-white text-black rounded-xl shadow-2xl p-4"
+          className="fixed right-6 z-50 w-72 bg-white text-black rounded-xl shadow-2xl p-4"
+          style={{ bottom: 'calc(max(1.5rem, env(safe-area-inset-bottom)) + 3.5rem)' }}
         >
           <h2 className="text-lg font-bold mb-2">聯絡資訊</h2>
           <p className="mb-1">📞 電話：02-2214-5786</p>
