@@ -17,15 +17,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         >
           {/* Use <img> for SVG to avoid next/image SVG restrictions/optimization */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/brand/logo.svg"
+            src="/brand/logo-v2.png"
             alt="公司 Logo"
             className="h-14 w-auto md:h-24"
-            style={{
-              // Stronger contrast without a visible box: stack multiple drop-shadows + slight boost
-              filter:
-                'drop-shadow(0 0 2px rgba(255,255,255,0.9)) drop-shadow(0 0 14px rgba(255,255,255,0.75)) drop-shadow(0 2px 6px rgba(0,0,0,0.65))',
-            }}
           />
         </Link>
 
