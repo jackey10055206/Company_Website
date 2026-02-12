@@ -17,9 +17,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         >
           {/* Use <img> for SVG to avoid next/image SVG restrictions/optimization */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/brand/logo-v3.png"
+            src="/brand/logo_1.svg"
             alt="公司 Logo"
             className="h-14 w-auto md:h-24"
           />
