@@ -1,4 +1,5 @@
 // src/app/(site)/layout.tsx
+import Image from 'next/image';
 import Link from 'next/link';
 import TopNav from '@/components/TopNav';
 
@@ -10,9 +11,21 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
                    flex flex-col items-center gap-2
                    md:flex-row md:items-center md:justify-between"
       >
-        <h1 className="text-2xl font-bold text-center md:text-left">
-          <Link href="/">我們公司的 LOGO</Link>
-        </h1>
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center md:justify-start"
+          aria-label="回到首頁"
+        >
+          <Image
+            src="/brand/logo.png"
+            alt="公司 Logo"
+            width={227}
+            height={79}
+            priority
+            className="h-7 w-auto md:h-9"
+          />
+        </Link>
+
         <TopNav />
       </header>
       {children}
