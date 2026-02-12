@@ -23,9 +23,23 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background-image: url('/bg-gradient.jpg');  /* 確保圖片放在 /public */
+}
+
+/* 讓背景圖永遠鋪滿整個畫面（包含內容不足一屏的情況）
+   注意：不要在 html 上設背景色，不然 body 的背景不會「傳播」到整個 viewport，
+   會出現你截圖那種下面一大塊變成咖啡底。 */
+html {
+  background: transparent;
+}
+
+body {
+  min-height: 100vh;
+  /* iOS Brave / Safari 有時會在最底下一點點區域不吃背景圖，用底色補上 */
+  background-color: #2d0b00; /* 接近漸層最下方的橘棕色 */
+
+  background-image: url('/bg-gradient.jpg'); /* /public/bg-gradient.jpg */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* 視差滾動效果，可選 */
+  /* iOS 上 background-attachment: fixed 會有底部白邊 bug，這裡先拿掉 */
 }

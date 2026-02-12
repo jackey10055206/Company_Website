@@ -9,10 +9,7 @@ export default function HomePage() {
 
   return (
     <main
-      className="min-h-screen w-full bg-cover bg-center relative text-white"
-      style={{
-        backgroundImage: "url('/bg-gradient.jpg')",
-      }}
+      className="min-h-screen w-full relative text-white pt-24 pb-16"
     >
       {/* 公司介紹文字區塊 */}
       <motion.div
