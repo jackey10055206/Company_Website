@@ -1,19 +1,30 @@
-FROM node:18-bullseye
+FROM node:18-bookworm
 
-# 安裝 sharp 依賴 libvips
+# Strapi (with upload) uses sharp. On arm64, compiling sharp from source is slow and fragile.
+# Prefer sharp prebuilt binaries and force sharp to ignore any system libvips.
 RUN apt-get update && apt-get install -y \
-  libvips-dev \
+  python3 \
+  make \
+  g++ \
+  pkg-config \
   && rm -rf /var/lib/apt/lists/*
 
-# 設定工作目錄
 WORKDIR /srv/app
 
-# 複製專案檔案
-COPY ./strapi .
+# Copy only lockfiles first for better layer caching
+COPY ./strapi/package.json ./strapi/package-lock.json ./
 
+ENV SHARP_IGNORE_GLOBAL_LIBVIPS=1
 
-# 安裝專案依賴
-RUN yarn install
+RUN npm ci
 
-# 啟動 Strapi
-CMD ["yarn", "develop"]
+# Copy the rest of the Strapi app
+COPY ./strapi ./
+
+# Build admin panel once at image build time
+ENV NODE_ENV=production
+RUN npm run build
+
+EXPOSE 1337
+
+CMD ["npm", "run", "start"]

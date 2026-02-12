@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "portfolios",
+  "info": {
+    "singularName": "portfolio",
+    "pluralName": "portfolios",
+    "displayName": "portfolio"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "event_name": {
+      "type": "string"
+    },
+    "completion_date": {
+      "type": "date"
+    },
+    "event_location": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "review_status": {
+      "type": "enumeration",
+      "enum": ["draft", "pending", "approved", "rejected"],
+      "default": "draft",
+      "required": true
+    },
+    "submitted_at": {
+      "type": "datetime"
+    },
+    "reviewed_at": {
+      "type": "datetime"
+    },
+    "cover_image": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "gallery_images": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    }
+  }
+}

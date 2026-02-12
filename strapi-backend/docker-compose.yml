@@ -2,31 +2,21 @@ services:
   strapi:
     build: .
     container_name: strapi-app
+    restart: unless-stopped
     working_dir: /srv/app
     environment:
-      DATABASE_CLIENT: postgres
-      DATABASE_NAME: ${DB_NAME}
-      DATABASE_HOST: db
-      DATABASE_PORT: ${DB_PORT}
-      DATABASE_USERNAME: ${DB_USER}
-      DATABASE_PASSWORD: ${DB_PASS}
+      NODE_ENV: production
+      # Use SQLite to match what you created in `npm run dev` (data lives in strapi/.tmp/data.db)
+      DATABASE_CLIENT: sqlite
+      DATABASE_FILENAME: .tmp/data.db
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
       APP_KEYS: ${APP_KEYS}
     ports:
       - '1337:1337'
-    depends_on:
-      - db
-  db:
-    image: postgres
-    container_name: strapi-db
-    restart: always
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASS}
     volumes:
-      - strapi-db-data:/var/lib/postgresql/data
+      - ./strapi/public/uploads:/srv/app/public/uploads
+      - ./strapi/.tmp:/srv/app/.tmp
 
-volumes:
-  strapi-db-data:

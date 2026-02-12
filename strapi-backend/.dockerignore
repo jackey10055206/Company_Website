@@ -1,0 +1,9 @@
+node_modules
+strapi/node_modules
+strapi/.cache
+strapi/build
+strapi/dist
+strapi/.tmp
+strapi/.strapi
+**/.DS_Store
+.git
