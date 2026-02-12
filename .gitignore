@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files
+.env
+.env.*
+
+# Strapi
+strapi-backend/strapi/.tmp/
+strapi-backend/strapi/dist/
+strapi-backend/strapi/.cache/
+strapi-backend/strapi/.strapi/
+strapi-backend/strapi/public/uploads/
+
+# Docker local artifacts/backups
+_openclaw_backup_docker/
+
+# Editor
+.vscode/
+.idea/
