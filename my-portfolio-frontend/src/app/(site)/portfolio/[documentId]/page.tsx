@@ -85,7 +85,10 @@ export default function PortfolioDetailPage({ params }: Params) {
       {/* Mobile sticky back bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/40 backdrop-blur md:hidden">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 text-sm text-white/90">
-          <Link href="/portfolio" className="inline-flex items-center gap-2 text-white/90 hover:text-white">
+          <Link
+            href="/portfolio"
+            className="relative z-50 inline-flex items-center gap-2 text-white/90 hover:text-white"
+          >
             <span aria-hidden>←</span>
             <span>回到場佈列表</span>
           </Link>
@@ -100,7 +103,10 @@ export default function PortfolioDetailPage({ params }: Params) {
 
       <div id="top" className="max-w-4xl mx-auto p-6 pt-24 pb-24 md:pb-16 md:p-8 space-y-8 text-white">
         <div className="flex items-center justify-between gap-3">
-          <Link href="/portfolio" className="text-white/70 hover:text-white underline underline-offset-4">
+          <Link
+            href="/portfolio"
+            className="relative z-50 inline-flex text-white/70 hover:text-white underline underline-offset-4"
+          >
             ← 回到場佈列表
           </Link>
         </div>
