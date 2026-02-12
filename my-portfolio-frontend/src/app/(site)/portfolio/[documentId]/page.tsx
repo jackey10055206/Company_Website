@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { getPortfolio, type PortfolioItem } from '@/lib/api';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -80,9 +81,32 @@ export default function PortfolioDetailPage({ params }: Params) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8 space-y-8 text-white">
+    <>
+      {/* Mobile sticky back bar */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/40 backdrop-blur md:hidden">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 text-sm text-white/90">
+          <Link href="/portfolio" className="inline-flex items-center gap-2 text-white/90 hover:text-white">
+            <span aria-hidden>←</span>
+            <span>回到場佈列表</span>
+          </Link>
+          <a
+            href="#top"
+            className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15"
+          >
+            回頂部
+          </a>
+        </div>
+      </div>
+
+      <div id="top" className="max-w-4xl mx-auto p-6 pt-24 pb-24 md:pb-16 md:p-8 space-y-8 text-white">
+        <div className="flex items-center justify-between gap-3">
+          <Link href="/portfolio" className="text-white/70 hover:text-white underline underline-offset-4">
+            ← 回到場佈列表
+          </Link>
+        </div>
+
       {/* 標題 + 活動資訊 */}
-      <h1 className="text-4xl font-bold">{item.title}</h1>
+      <h1 className="text-3xl md:text-4xl font-bold">{item.title}</h1>
       <div className="flex flex-wrap items-center text-white/70 space-x-2">
         <span>{item.event_name}</span>
         <span>•</span>
@@ -180,6 +204,7 @@ export default function PortfolioDetailPage({ params }: Params) {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
