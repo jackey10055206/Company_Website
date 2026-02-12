@@ -19,9 +19,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/brand/logo-v2.png"
+            src="/brand/logo-v3.png"
             alt="公司 Logo"
-            className="h-14 w-auto -mt-1 md:h-24 md:-mt-2"
+            className="h-14 w-auto md:h-24"
           />
         </Link>
 
