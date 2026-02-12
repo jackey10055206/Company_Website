@@ -101,6 +101,7 @@ export async function POST(req: Request) {
     const galleryUploadIds = uploaded.slice(galleryUploadStartIndex).map((x) => x.id);
 
     const desiredStatus = user.role === 'admin' ? statusApproved : statusPending;
+    const nowIso = new Date().toISOString();
 
     const baseData: Record<string, unknown> = {
       // TODO: add uploader_username field in Strapi portfolio to support ownership
@@ -110,9 +111,12 @@ export async function POST(req: Request) {
       event_location,
       description,
       // Workflow:
-      // - uploader => pending
-      // - admin    => approved (no need to "submit for review" then approve yourself)
+      // - uploader => pending (+ submitted_at)
+      // - admin    => approved (+ reviewed_at) (no need to "submit for review" then approve yourself)
       [statusField]: desiredStatus,
+      ...(user.role === 'admin'
+        ? { reviewed_at: nowIso }
+        : { submitted_at: nowIso }),
     };
 
     // Match Strapi field names (per your schema)
@@ -129,10 +133,15 @@ export async function POST(req: Request) {
       const data: Record<string, unknown> = { ...baseData };
 
       // Workflow enforcement:
-      // - uploader edits always go back to pending
-      // - admin edits stay approved by default
-      if (user.role !== 'admin') data[statusField] = statusPending;
-      else data[statusField] = statusApproved;
+      // - uploader edits always go back to pending (+ submitted_at)
+      // - admin edits stay approved by default (+ reviewed_at)
+      if (user.role !== 'admin') {
+        data[statusField] = statusPending;
+        data.submitted_at = nowIso;
+      } else {
+        data[statusField] = statusApproved;
+        data.reviewed_at = nowIso;
+      }
 
       // Note: publish/unpublish is not used as workflow source-of-truth in this project.
       // We keep the best-effort unpublish call below for uploader safety.
