@@ -20,7 +20,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <img
             src="/brand/logo.svg"
             alt="公司 Logo"
-            className="h-9 w-auto md:h-12"
+            className="h-14 w-auto md:h-24 drop-shadow-[0_2px_10px_rgba(255,255,255,0.55)]"
           />
         </Link>
 
