@@ -1,5 +1,4 @@
 // src/app/(site)/layout.tsx
-import Image from 'next/image';
 import Link from 'next/link';
 import TopNav from '@/components/TopNav';
 
@@ -16,12 +15,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           className="inline-flex items-center justify-center md:justify-start"
           aria-label="回到首頁"
         >
-          <Image
-            src="/brand/logo-v2.png"
+          {/* Use <img> for SVG to avoid next/image SVG restrictions/optimization */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/logo.svg"
             alt="公司 Logo"
-            width={227}
-            height={79}
-            priority
             className="h-9 w-auto md:h-12"
           />
         </Link>
