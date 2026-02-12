@@ -17,7 +17,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           aria-label="回到首頁"
         >
           <Image
-            src="/brand/logo.png"
+            src="/brand/logo-v2.png"
             alt="公司 Logo"
             width={227}
             height={79}
