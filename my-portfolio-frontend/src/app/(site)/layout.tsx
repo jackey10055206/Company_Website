@@ -6,9 +6,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <header
-        className="absolute top-0 left-0 w-full z-20 px-6 py-4
+        className="sticky top-0 left-0 w-full z-40
+                   px-4 py-3 md:px-6 md:py-4
                    flex flex-col items-center gap-2
-                   md:flex-row md:items-center md:justify-between"
+                   md:flex-row md:items-center md:justify-between
+                   bg-black/20 backdrop-blur-md border-b border-white/10"
       >
         <Link
           href="/"

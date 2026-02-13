@@ -17,7 +17,7 @@ export default async function PortfolioListPage() {
   }
 
   return (
-    <main className="max-w-screen-xl mx-auto px-6 pt-24 pb-12">
+    <main className="max-w-screen-xl mx-auto px-6 pt-10 md:pt-12 pb-12">
       <h1 className="text-3xl font-bold mb-6 text-center text-white">場佈展示</h1>
       {errorMsg ? (
         <div className="rounded-lg border border-red-400/30 bg-red-500/10 p-4 text-red-100 mb-6">

@@ -27,7 +27,7 @@ export default async function EnvironmentPage() {
   }
 
   return (
-    <main className="max-w-screen-xl mx-auto px-6 pt-24 pb-12 text-white">
+    <main className="max-w-screen-xl mx-auto px-6 pt-10 md:pt-12 pb-12 text-white">
       <h1 className="text-3xl font-bold mb-6 text-center">環境介紹</h1>
       {errorMsg ? (
         <div className="rounded-lg border border-red-400/30 bg-red-500/10 p-4 text-red-100">

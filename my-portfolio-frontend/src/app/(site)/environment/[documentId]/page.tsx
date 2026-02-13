@@ -15,7 +15,7 @@ export default async function EnvironmentDetailPage({
   const src = url ? (url.startsWith('/') ? `${API_BASE}${url}` : url) : '';
 
   return (
-    <main className="max-w-4xl mx-auto px-6 pt-24 pb-12 text-white space-y-6">
+    <main className="max-w-4xl mx-auto px-6 pt-10 md:pt-12 pb-12 text-white space-y-6">
       <div>
         <Link href="/environment" className="text-white/70 hover:text-white underline underline-offset-4">
           ← 回到環境列表

@@ -101,7 +101,7 @@ export default function PortfolioDetailPage({ params }: Params) {
         </div>
       </div>
 
-      <div id="top" className="max-w-4xl mx-auto p-6 pt-24 pb-24 md:pb-16 md:p-8 space-y-8 text-white">
+      <div id="top" className="max-w-4xl mx-auto p-6 pt-10 md:pt-12 pb-24 md:pb-16 md:p-8 space-y-8 text-white">
         <div className="flex items-center justify-between gap-3">
           <Link
             href="/portfolio"

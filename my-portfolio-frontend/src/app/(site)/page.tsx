@@ -9,7 +9,7 @@ export default function HomePage() {
 
   return (
     <main
-      className="min-h-screen w-full relative text-white pt-24 pb-16"
+      className="min-h-screen w-full relative text-white pt-10 md:pt-12 pb-16"
     >
       {/* 公司介紹文字區塊 */}
       <motion.div
