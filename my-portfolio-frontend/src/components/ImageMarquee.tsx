@@ -28,7 +28,7 @@ export default function ImageMarquee({
       className={
         'w-full overflow-hidden ' +
         // full-width strip (no "card" look)
-        'bg-black/10 backdrop-blur-sm border-y border-white/10 ' +
+        'bg-black/10 backdrop-blur-sm border-b border-white/10 ' +
         heightClassName
       }
     >
@@ -47,7 +47,7 @@ export default function ImageMarquee({
             className={
               'relative h-full flex items-center justify-center flex-none ' +
               // Keep each image touching the next (tiny gap only)
-              'w-[300px] md:w-[420px] pr-2 md:pr-3'
+              'w-[340px] md:w-[520px]'
             }
           >
             <div className="relative w-full h-full">

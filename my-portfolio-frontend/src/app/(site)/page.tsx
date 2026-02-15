@@ -11,9 +11,9 @@ export default function HomePage() {
   return (
     <main className="min-h-screen w-full relative text-white pb-16">
       {/* Header 下方：圖片跑馬燈（無縫循環，左→右，全寬橫條） */}
-      <div className="relative z-10 w-full pt-4 md:pt-6">
+      <div className="relative z-10 w-full">
         <ImageMarquee
-          seconds={20}
+          seconds={30}
           heightClassName="h-28 md:h-36"
           items={[
             { src: '/marquee/01.jpg', alt: 'Marquee 01' },
