@@ -26,8 +26,9 @@ export default function ImageMarquee({
     <section
       aria-label="圖片跑馬燈"
       className={
-        'w-full overflow-hidden rounded-2xl ' +
-        'bg-black/15 backdrop-blur-sm ring-1 ring-white/10 ' +
+        'w-full overflow-hidden ' +
+        // full-width strip (no "card" look)
+        'bg-black/10 backdrop-blur-sm border-y border-white/10 ' +
         heightClassName
       }
     >
@@ -44,19 +45,17 @@ export default function ImageMarquee({
           <div
             key={`${it.src}-${idx}`}
             className={
-              'relative h-full flex items-center justify-center ' +
-              // Fixed slide width keeps spacing consistent.
-              'w-[260px] md:w-[340px] ' +
-              'px-6'
+              'relative h-full flex items-center justify-center flex-none ' +
+              // Keep each image touching the next (tiny gap only)
+              'w-[300px] md:w-[420px] pr-2 md:pr-3'
             }
           >
-            <div className="relative w-full h-[70%]">
+            <div className="relative w-full h-full">
               <Image
                 src={it.src}
                 alt={it.alt}
                 fill
                 className="object-contain"
-                // local public assets; keep it simple
                 unoptimized
                 priority={idx < items.length}
               />
