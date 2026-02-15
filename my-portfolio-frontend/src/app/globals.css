@@ -43,3 +43,32 @@ body {
   background-repeat: no-repeat;
   /* iOS 上 background-attachment: fixed 會有底部白邊 bug，這裡先拿掉 */
 }
+
+/* ------------------------------
+   Marquee (ImageMarquee)
+   ------------------------------ */
+
+@keyframes marquee-left-to-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.marquee-track {
+  width: max-content;
+  animation: marquee-left-to-right var(--marquee-seconds, 20s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}

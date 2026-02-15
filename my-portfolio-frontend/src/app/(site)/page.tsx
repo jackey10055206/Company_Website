@@ -3,14 +3,30 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import ImageMarquee from '@/components/ImageMarquee';
 
 export default function HomePage() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
-    <main
-      className="min-h-screen w-full relative text-white pt-10 md:pt-12 pb-16"
-    >
+    <main className="min-h-screen w-full relative text-white pb-16">
+      {/* Header 下方：圖片跑馬燈（無縫循環，左→右） */}
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-6 md:pt-8">
+        <ImageMarquee
+          seconds={20}
+          items={[
+            { src: '/marquee/01.jpg', alt: 'Marquee 01' },
+            { src: '/marquee/02.jpg', alt: 'Marquee 02' },
+            { src: '/marquee/03.jpg', alt: 'Marquee 03' },
+            { src: '/marquee/04.jpg', alt: 'Marquee 04' },
+            { src: '/marquee/05.jpg', alt: 'Marquee 05' },
+            { src: '/marquee/06.jpg', alt: 'Marquee 06' },
+            { src: '/marquee/07.jpg', alt: 'Marquee 07' },
+            { src: '/marquee/08.jpg', alt: 'Marquee 08' },
+          ]}
+        />
+      </div>
+
       {/* 公司介紹文字區塊 */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
