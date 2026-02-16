@@ -14,7 +14,7 @@ export default function HomePage() {
       <div className="relative z-10 w-full">
         <ImageMarquee
           seconds={60}
-          heightClassName="h-40 md:h-56"
+          heightClassName="h-44 md:h-[360px]"
           items={[
             { src: '/marquee/01.jpg', alt: 'Marquee 01' },
             { src: '/marquee/02.jpg', alt: 'Marquee 02' },
