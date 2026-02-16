@@ -47,7 +47,7 @@ export default function ImageMarquee({
             className={
               'relative h-full flex items-center justify-center flex-none ' +
               // Keep each image touching the next (tiny gap only)
-              'w-[336px] md:w-[432px]'
+              'w-[240px] md:w-[336px]'
             }
           >
             <div className="relative w-full h-full">
