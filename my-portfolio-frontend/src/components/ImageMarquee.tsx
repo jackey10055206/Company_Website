@@ -12,12 +12,15 @@ export default function ImageMarquee({
   items,
   seconds = 20,
   heightClassName = 'h-24 md:h-32',
+  aspectClassName = 'aspect-[16/9]',
 }: {
   items: ImageMarqueeItem[];
   /** seconds for one full loop */
   seconds?: number;
   /** tailwind height classes applied to the marquee strip */
   heightClassName?: string;
+  /** tailwind aspect ratio class for each slide (e.g. aspect-[16/9]) */
+  aspectClassName?: string;
 }) {
   // Duplicate to make a seamless loop
   const loopItems = [...items, ...items];
@@ -42,14 +45,7 @@ export default function ImageMarquee({
         style={{ ['--marquee-seconds' as unknown as string]: `${seconds}s` } as React.CSSProperties}
       >
         {loopItems.map((it, idx) => (
-          <div
-            key={`${it.src}-${idx}`}
-            className={
-              'relative h-full flex items-center justify-center flex-none ' +
-              // Keep each image touching the next (tiny gap only)
-              'w-[360px] md:w-[640px]'
-            }
-          >
+          <div key={`${it.src}-${idx}`} className={'relative h-full flex-none ' + aspectClassName}>
             <div className="relative w-full h-full">
               <Image
                 src={it.src}
