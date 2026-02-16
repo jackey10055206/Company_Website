@@ -13,7 +13,7 @@ export default function HomePage() {
       {/* Header 下方：圖片跑馬燈（無縫循環，左→右，全寬橫條） */}
       <div className="relative z-10 w-full">
         <ImageMarquee
-          seconds={60}
+          seconds={90}
           heightClassName="h-44 md:h-[360px]"
           items={[
             { src: '/marquee/01.jpg', alt: 'Marquee 01' },
