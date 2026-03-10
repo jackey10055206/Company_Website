@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getEnvironment, API_BASE } from '@/lib/api';
+import { getEnvironment } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,9 @@ export default async function EnvironmentDetailPage({
   const { documentId } = await params;
   const item = await getEnvironment(documentId);
   const url = item.photo?.formats?.small?.url || item.photo?.url || '';
-  const src = url ? (url.startsWith('/') ? `${API_BASE}${url}` : url) : '';
+  const src = url
+    ? (url.startsWith('http://') || url.startsWith('https://') ? url : url)
+    : '';
 
   return (
     <main className="max-w-4xl mx-auto px-6 pt-10 md:pt-12 pb-12 text-white space-y-6">

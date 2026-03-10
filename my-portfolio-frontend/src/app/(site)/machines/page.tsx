@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getMachines, API_BASE } from '@/lib/api';
+import { getMachines } from '@/lib/api';
 import FadeInOnView from '@/components/FadeInOnView';
 
 export const dynamic = 'force-dynamic';
@@ -40,7 +40,9 @@ export default async function MachinesPage() {
         {items.map((item, idx) => {
           const { id, title, photo } = item;
           const url = photo?.formats?.small?.url || photo?.url || '';
-          const src = url ? (url.startsWith('/') ? `${API_BASE}${url}` : url) : '';
+          const src = url
+            ? (url.startsWith('http://') || url.startsWith('https://') ? url : url)
+            : '';
 
           return (
             <FadeInOnView
