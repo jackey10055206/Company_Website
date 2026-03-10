@@ -15,6 +15,7 @@ export default function HomePage() {
         <ImageMarquee
           seconds={90}
           heightClassName="h-44 md:h-[360px]"
+          edgeFade
           items={[
             { src: '/marquee/01.jpg', alt: 'Marquee 01' },
             { src: '/marquee/02.jpg', alt: 'Marquee 02' },

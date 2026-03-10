@@ -13,6 +13,7 @@ export default function ImageMarquee({
   seconds = 20,
   heightClassName = 'h-24 md:h-32',
   aspectClassName = 'aspect-[16/9]',
+  edgeFade = false,
 }: {
   items: ImageMarqueeItem[];
   /** seconds for one full loop */
@@ -21,6 +22,8 @@ export default function ImageMarquee({
   heightClassName?: string;
   /** tailwind aspect ratio class for each slide (e.g. aspect-[16/9]) */
   aspectClassName?: string;
+  /** add left/right edge fade mask for smoother entry/exit */
+  edgeFade?: boolean;
 }) {
   // Duplicate to make a seamless loop
   const loopItems = [...items, ...items];
@@ -29,9 +32,10 @@ export default function ImageMarquee({
     <section
       aria-label="圖片跑馬燈"
       className={
-        'w-full overflow-hidden ' +
+        'w-full overflow-hidden relative ' +
         // full-width strip (no "card" look)
         'bg-black/10 backdrop-blur-sm border-b border-white/10 ' +
+        (edgeFade ? 'image-marquee-edge-fade ' : '') +
         heightClassName
       }
     >

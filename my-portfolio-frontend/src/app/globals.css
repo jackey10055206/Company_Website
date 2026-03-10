@@ -67,6 +67,27 @@ body {
   animation-play-state: paused;
 }
 
+.image-marquee-edge-fade::before,
+.image-marquee-edge-fade::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(24px, 9vw, 100px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.image-marquee-edge-fade::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(45, 11, 0, 0.95) 0%, rgba(45, 11, 0, 0) 100%);
+}
+
+.image-marquee-edge-fade::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(45, 11, 0, 0.95) 0%, rgba(45, 11, 0, 0) 100%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
