@@ -24,6 +24,8 @@ export default function PortalAdminPage() {
   const [data, setData] = useState<PendingResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [actionKey, setActionKey] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   async function reload() {
     setLoading(true);
@@ -49,8 +51,25 @@ export default function PortalAdminPage() {
     void reload();
   }, []);
 
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2600);
+    return () => clearTimeout(t);
+  }, [toast]);
+
   return (
     <div className="space-y-6">
+      {toast ? (
+        <div className="fixed right-4 top-20 z-50">
+          <div
+            className={`rounded-xl border px-4 py-2 text-sm shadow-lg backdrop-blur ${toast.type === 'success'
+              ? 'border-emerald-400/30 bg-emerald-500/15 text-emerald-100'
+              : 'border-rose-400/30 bg-rose-500/15 text-rose-100'}`}
+          >
+            {toast.message}
+          </div>
+        </div>
+      ) : null}
       <div className="rounded-2xl border border-white/10 bg-black/30 p-6 backdrop-blur">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
@@ -145,9 +164,11 @@ export default function PortalAdminPage() {
                         type="button"
                         disabled={!reviewKey || loading}
                         className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs text-emerald-100 hover:bg-emerald-500/30 disabled:opacity-50"
+                        title={actionKey === `approve:${reviewKey}` ? '處理中…' : 'Approve'}
                         onClick={async () => {
                           if (!reviewKey) return;
                           setLoading(true);
+                          setActionKey(`approve:${reviewKey}`);
                           try {
                             const res = await fetch('/api/portal/portfolio/review', {
                               method: 'POST',
@@ -158,15 +179,18 @@ export default function PortalAdminPage() {
                             if (!res.ok) {
                               const msg = isRecord(j) && typeof j.error === 'string' ? j.error : 'Approve failed';
                               setError(msg);
+                              setToast({ type: 'error', message: msg });
                               return;
                             }
+                            setToast({ type: 'success', message: '已核准（Approve）' });
                             await reload();
                           } finally {
                             setLoading(false);
+                            setActionKey(null);
                           }
                         }}
                       >
-                        Approve
+                        {actionKey === `approve:${reviewKey}` ? '處理中…' : 'Approve'}
                       </button>
 
                       <button
@@ -177,6 +201,7 @@ export default function PortalAdminPage() {
                           if (!reviewKey) return;
                           if (!confirm('確定要 Reject 嗎？')) return;
                           setLoading(true);
+                          setActionKey(`reject:${reviewKey}`);
                           try {
                             const res = await fetch('/api/portal/portfolio/review', {
                               method: 'POST',
@@ -187,15 +212,18 @@ export default function PortalAdminPage() {
                             if (!res.ok) {
                               const msg = isRecord(j) && typeof j.error === 'string' ? j.error : 'Reject failed';
                               setError(msg);
+                              setToast({ type: 'error', message: msg });
                               return;
                             }
+                            setToast({ type: 'success', message: '已退回（Reject）' });
                             await reload();
                           } finally {
                             setLoading(false);
+                            setActionKey(null);
                           }
                         }}
                       >
-                        Reject
+                        {actionKey === `reject:${reviewKey}` ? '處理中…' : 'Reject'}
                       </button>
                     </div>
                   </div>

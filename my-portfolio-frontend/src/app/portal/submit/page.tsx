@@ -26,6 +26,7 @@ export default function PortalSubmitPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const [me, setMe] = useState<{ ok: true; user: { username: string; role: string } } | null>(null);
 
@@ -88,8 +89,26 @@ export default function PortalSubmitPage() {
     })();
   }, [sp]);
 
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2600);
+    return () => clearTimeout(t);
+  }, [toast]);
+
   return (
     <div className="space-y-6">
+      {toast ? (
+        <div className="fixed right-4 top-20 z-50">
+          <div
+            className={`rounded-xl border px-4 py-2 text-sm shadow-lg backdrop-blur ${toast.type === 'success'
+              ? 'border-emerald-400/30 bg-emerald-500/15 text-emerald-100'
+              : 'border-rose-400/30 bg-rose-500/15 text-rose-100'}`}
+          >
+            {toast.message}
+          </div>
+        </div>
+      ) : null}
+
       <div className="rounded-2xl border border-white/10 bg-black/30 p-6 backdrop-blur">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-2xl font-semibold">
@@ -221,12 +240,15 @@ export default function PortalSubmitPage() {
               else if (typeof id === 'number' || typeof id === 'string') setExistingId(String(id));
 
               if (typeof status === 'string') setExistingStatus(status);
-              setSuccess(me?.user?.role === 'admin'
+              const okMsg = me?.user?.role === 'admin'
                 ? '已送出成功（直接發布 / approved）。'
-                : '已送出成功（已送審 / pending）。');
+                : '已送出成功（已送審 / pending）。';
+              setSuccess(okMsg);
+              setToast({ type: 'success', message: okMsg });
             } catch (err: unknown) {
               const message = err instanceof Error ? err.message : 'Submit failed';
               setError(message);
+              setToast({ type: 'error', message });
             } finally {
               setLoading(false);
             }

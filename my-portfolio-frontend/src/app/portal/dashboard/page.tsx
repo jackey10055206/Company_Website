@@ -38,10 +38,13 @@ export default function PortalDashboardPage() {
   const [me, setMe] = useState<MeResponse['user'] | null>(null);
   const [items, setItems] = useState<Item[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   useEffect(() => {
     (async () => {
       setError(null);
+      setLoading(true);
       const meRes = await fetch('/api/portal/me', { cache: 'no-store' });
       const meJson = (await meRes.json().catch(() => null)) as MeResponse | null;
       if (meRes.ok && meJson?.ok) setMe(meJson.user);
@@ -49,17 +52,38 @@ export default function PortalDashboardPage() {
       const res = await fetch('/api/portal/portfolio/list', { cache: 'no-store' });
       const json = (await res.json().catch(() => null)) as ListResponse | null;
       if (!res.ok || !json?.ok) {
-        setError('載入列表失敗');
+        const msg = '載入列表失敗';
+        setError(msg);
+        setToast({ type: 'error', message: msg });
+        setLoading(false);
         return;
       }
       setItems(Array.isArray(json.items) ? json.items : []);
+      setLoading(false);
     })();
   }, []);
 
   const isAdmin = useMemo(() => me?.role === 'admin', [me?.role]);
 
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2600);
+    return () => clearTimeout(t);
+  }, [toast]);
+
   return (
     <div className="space-y-6">
+      {toast ? (
+        <div className="fixed right-4 top-20 z-50">
+          <div
+            className={`rounded-xl border px-4 py-2 text-sm shadow-lg backdrop-blur ${toast.type === 'success'
+              ? 'border-emerald-400/30 bg-emerald-500/15 text-emerald-100'
+              : 'border-rose-400/30 bg-rose-500/15 text-rose-100'}`}
+          >
+            {toast.message}
+          </div>
+        </div>
+      ) : null}
       <div className="rounded-2xl border border-white/10 bg-black/30 p-6 backdrop-blur">
         <h2 className="text-2xl font-semibold">Dashboard</h2>
         <p className="mt-2 text-white/70">
@@ -91,14 +115,24 @@ export default function PortalDashboardPage() {
         <div className="flex items-center justify-between gap-3">
           <h3 className="text-lg font-semibold">我的送審紀錄</h3>
           <button
-            className="rounded-full bg-white/10 px-4 py-2 text-sm hover:bg-white/15"
+            className="rounded-full bg-white/10 px-4 py-2 text-sm hover:bg-white/15 disabled:opacity-60"
+            disabled={loading}
             onClick={async () => {
+              setLoading(true);
               const res = await fetch('/api/portal/portfolio/list', { cache: 'no-store' });
               const json = (await res.json().catch(() => null)) as ListResponse | null;
-              if (res.ok && json?.ok) setItems(Array.isArray(json.items) ? json.items : []);
+              if (res.ok && json?.ok) {
+                setItems(Array.isArray(json.items) ? json.items : []);
+                setToast({ type: 'success', message: '列表已更新' });
+              } else {
+                const msg = '重新整理失敗';
+                setError(msg);
+                setToast({ type: 'error', message: msg });
+              }
+              setLoading(false);
             }}
           >
-            重新整理
+            {loading ? '刷新中…' : '重新整理'}
           </button>
         </div>
 
