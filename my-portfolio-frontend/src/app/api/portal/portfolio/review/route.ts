@@ -47,10 +47,25 @@ export async function POST(req: Request) {
         headers: { Authorization: `Bearer ${getStrapiConfig().token}` },
       });
     } else {
-      await fetch(`${getStrapiConfig().url}${portfolioEndpoint}/${encodeURIComponent(key)}/actions/unpublish`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${getStrapiConfig().token}` },
-      });
+      // Reject path: many pending items are already draft/unpublished.
+      // In that case, Strapi may return non-2xx for unpublish action.
+      // We keep reject non-blocking as long as review_status update succeeded.
+      const unpublishRes = await fetch(
+        `${getStrapiConfig().url}${portfolioEndpoint}/${encodeURIComponent(key)}/actions/unpublish`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${getStrapiConfig().token}` },
+        }
+      );
+
+      if (!unpublishRes.ok) {
+        const bodyText = await unpublishRes.text().catch(() => '');
+        console.warn('[portal/review] unpublish non-fatal on reject', {
+          key,
+          status: unpublishRes.status,
+          body: bodyText,
+        });
+      }
     }
 
     const payload = isRecord(updated) && isRecord(updated.data) ? updated.data : updated;
