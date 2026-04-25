@@ -24,7 +24,6 @@ export default function HomePage() {
             { src: '/marquee/05.jpg', alt: 'Marquee 05' },
             { src: '/marquee/06.jpg', alt: 'Marquee 06' },
             { src: '/marquee/07.jpg', alt: 'Marquee 07' },
-            { src: '/marquee/08.jpg', alt: 'Marquee 08' },
           ]}
         />
       </div>
